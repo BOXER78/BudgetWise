@@ -3,50 +3,68 @@
 ```mermaid
 erDiagram
 
-    USER {
-        int id PK
+    USERS {
+        int user_id PK
         string name
         string email
-        string password
+        string password_hash
+        string profile_image
+        datetime created_at
+        datetime last_login
+    }
+
+    CATEGORIES {
+        int category_id PK
+        string name
+        string description
+        int user_id FK
         datetime created_at
     }
 
-    CATEGORY {
-        int id PK
-        string name
-        int user_id FK
-    }
-
-    EXPENSE {
-        int id PK
-        double amount
-        date expense_date
-        string description
+    EXPENSES {
+        int expense_id PK
         int user_id FK
         int category_id FK
+        decimal amount
+        string description
+        string payment_mode
+        datetime expense_date
+        datetime created_at
     }
 
-    BUDGET {
-        int id PK
-        double amount
+    BUDGETS {
+        int budget_id PK
+        int user_id FK
+        decimal amount
         int month
         int year
-        int user_id FK
+        datetime created_at
     }
 
-    SAVINGS_GOAL {
-        int id PK
+    SAVINGS_GOALS {
+        int goal_id PK
+        int user_id FK
         string title
-        double target_amount
-        double current_amount
-        date deadline
-        int user_id FK
+        decimal target_amount
+        decimal current_amount
+        datetime deadline
+        string status
+        datetime created_at
     }
 
-    USER ||--o{ EXPENSE : has
-    USER ||--o{ CATEGORY : creates
-    USER ||--o{ BUDGET : sets
-    USER ||--o{ SAVINGS_GOAL : owns
+    REPORTS {
+        int report_id PK
+        int user_id FK
+        string report_type
+        datetime generated_at
+        string file_path
+    }
 
-    CATEGORY ||--o{ EXPENSE : categorizes
+    USERS ||--o{ CATEGORIES : creates
+    USERS ||--o{ EXPENSES : records
+    USERS ||--o{ BUDGETS : sets
+    USERS ||--o{ SAVINGS_GOALS : owns
+    USERS ||--o{ REPORTS : generates
+
+    CATEGORIES ||--o{ EXPENSES : categorizes
 ```
