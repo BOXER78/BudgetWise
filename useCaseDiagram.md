@@ -2,64 +2,81 @@
 
 ```mermaid
 graph LR
+
     %% Actors
     U((User))
     A((Admin))
 
     %% System Boundary
-    subgraph System["BudgetWise - Full Stack Application"]
+    subgraph System["BudgetWise - Multi User Finance System"]
         direction TB
-        
-        UC1(Register/Login)
-        UC2(Logout)
 
-        subgraph UserMgmt["User Management"]
-            UC3(View Profile)
-            UC4(Update Profile)
+        %% Authentication
+        subgraph Auth["Authentication"]
+            UC1(Register)
+            UC2(Login)
+            UC3(Logout)
         end
 
-        subgraph ExpenseMgmt["Expense Management"]
-            UC5(Add Expense)
-            UC6(Edit Expense)
-            UC7(Delete Expense)
-            UC8(View Expenses)
-            UC9(Filter by Date/Category)
+        %% Profile
+        subgraph Profile["Profile Management"]
+            UC4(View Profile)
+            UC5(Update Profile)
+            UC6(Change Password)
         end
 
-        subgraph CategoryMgmt["Category Management"]
-            UC10(Add Category)
-            UC11(Edit Category)
-            UC12(Delete Category)
+        %% Expense Module
+        subgraph ExpenseModule["Expense Management"]
+            UC7(Add Expense)
+            UC8(Edit Expense)
+            UC9(Delete Expense)
+            UC10(View Expense History)
+            UC11(Filter by Date)
+            UC12(Filter by Category)
         end
 
-        subgraph BudgetMgmt["Budget Management"]
-            UC13(Set Monthly Budget)
-            UC14(View Budget Status)
-            UC15(Overspending Alert)
+        %% Category Module
+        subgraph CategoryModule["Category Management"]
+            UC13(Create Category)
+            UC14(Update Category)
+            UC15(Delete Category)
         end
 
-        subgraph SavingsMgmt["Savings Goal Management"]
-            UC16(Create Savings Goal)
-            UC17(Update Goal Progress)
-            UC18(View Goal Status)
+        %% Budget Module
+        subgraph BudgetModule["Budget Management"]
+            UC16(Set Monthly Budget)
+            UC17(Set Category Budget)
+            UC18(View Budget Status)
+            UC19(Get Overspending Alert)
         end
 
+        %% Savings Module
+        subgraph SavingsModule["Savings Goals"]
+            UC20(Create Goal)
+            UC21(Update Goal Progress)
+            UC22(View Goal Status)
+        end
+
+        %% Reports
         subgraph Reports["Reports & Analytics"]
-            UC19(Generate Monthly Report)
-            UC20(View Category Breakdown)
+            UC23(Generate Monthly Report)
+            UC24(Generate Category Report)
+            UC25(View Dashboard Summary)
         end
 
-        subgraph AdminFeatures["Admin Features"]
-            UC21(View All Users)
-            UC22(Monitor System Activity)
+        %% Admin Module
+        subgraph AdminModule["Admin Features"]
+            UC26(View All Users)
+            UC27(Monitor System)
+            UC28(Deactivate User)
         end
     end
 
-    %% Actor Styles
+    %% Styling
     style U fill:#f9f,stroke:#333,stroke-width:2px
     style A fill:#f9f,stroke:#333,stroke-width:2px
 
-    %% User Relationships
+    %% User Relations
     U --> UC1
     U --> UC2
     U --> UC3
@@ -74,18 +91,26 @@ graph LR
     U --> UC12
     U --> UC13
     U --> UC14
+    U --> UC15
     U --> UC16
     U --> UC17
     U --> UC18
-    U --> UC19
     U --> UC20
+    U --> UC21
+    U --> UC22
+    U --> UC23
+    U --> UC24
+    U --> UC25
 
-    %% Include relationship (dashed)
-    UC13 -.-> UC15
-    UC5 -.-> UC9
+    %% Include / Extend Relationships
+    UC16 -.-> UC19
+    UC17 -.-> UC19
+    UC7 -.-> UC11
+    UC7 -.-> UC12
 
-    %% Admin Relationships
-    A --> UC1
-    A --> UC21
-    A --> UC22
+    %% Admin Relations
+    A --> UC2
+    A --> UC26
+    A --> UC27
+    A --> UC28
 ```

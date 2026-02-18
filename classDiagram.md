@@ -3,37 +3,38 @@
 ```mermaid
 classDiagram
 
+    %% ================= ENTITIES =================
+
     class User {
-        +Long id
+        +Long userId
         +String name
         +String email
-        +String password
+        +String passwordHash
         +Date createdAt
-        +register()
         +login()
+        +register()
         +updateProfile()
     }
 
     class Expense {
-        +Long id
+        +Long expenseId
         +Double amount
-        +Date date
+        +Date expenseDate
         +String description
+        +String paymentMode
         +createExpense()
         +updateExpense()
         +deleteExpense()
     }
 
     class Category {
-        +Long id
+        +Long categoryId
         +String name
-        +createCategory()
-        +updateCategory()
-        +deleteCategory()
+        +String description
     }
 
     class Budget {
-        +Long id
+        +Long budgetId
         +Double amount
         +int month
         +int year
@@ -41,7 +42,7 @@ classDiagram
     }
 
     class SavingsGoal {
-        +Long id
+        +Long goalId
         +String title
         +Double targetAmount
         +Double currentAmount
@@ -49,17 +50,48 @@ classDiagram
         +updateProgress()
     }
 
-    class Report {
-        +generateMonthlyReport()
-        +generateCategoryReport()
+    %% ================= CONTROLLERS =================
+
+    class AuthController {
+        +login()
+        +register()
     }
+
+    class ExpenseController {
+        +addExpense()
+        +updateExpense()
+        +deleteExpense()
+        +getExpenses()
+    }
+
+    %% ================= SERVICES =================
+
+    class ExpenseService {
+        +addExpense()
+        +calculateTotal()
+    }
+
+    class BudgetService {
+        +checkBudgetLimit()
+    }
+
+    %% ================= REPOSITORIES =================
+
+    class UserRepository
+    class ExpenseRepository
+    class BudgetRepository
+
+    %% ================= RELATIONSHIPS =================
 
     User "1" --> "*" Expense
     User "1" --> "*" Category
     User "1" --> "*" Budget
     User "1" --> "*" SavingsGoal
-
     Category "1" --> "*" Expense
 
-    User --> Report
+    AuthController --> UserRepository
+    ExpenseController --> ExpenseService
+    ExpenseService --> ExpenseRepository
+    ExpenseService --> BudgetService
+    BudgetService --> BudgetRepository
 ```
