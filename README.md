@@ -40,3 +40,4 @@ Comprehensive design documentation is available in the root directory:
 - **OOP Principles**: Used for modeling core financial entities and services.
 - **Clean Architecture**: Decoupled layers for HTTP handling, business logic, and data access.
 - **Security**: JWT-based authentication and Row Level Security (RLS).
+
