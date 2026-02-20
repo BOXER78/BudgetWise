@@ -65,3 +65,4 @@ erDiagram
     BUDGETS }o--|| CATEGORIES : "associates with"
     SAVINGS_GOALS }o--|| "auth.users" : "owned by"
 ```
+
