@@ -69,3 +69,4 @@ classDiagram
     ExpenseService ..> Expense
     BudgetService ..> BudgetStatus
 ```
+
