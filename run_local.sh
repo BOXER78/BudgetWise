@@ -19,3 +19,4 @@ echo "=========================================="
 
 # Wait for both processes
 wait $BACKEND_PID $FRONTEND_PID
+
