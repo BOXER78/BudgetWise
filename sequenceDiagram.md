@@ -35,3 +35,4 @@ sequenceDiagram
     SF-->>U: JSON Response
     Note over U: Toast Alert: "Expense added" + Budget Status
 ```
+
