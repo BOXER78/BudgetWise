@@ -41,3 +41,4 @@ Comprehensive design documentation is available in the root directory:
 - **Clean Architecture**: Decoupled layers for HTTP handling, business logic, and data access.
 - **Security**: JWT-based authentication and Row Level Security (RLS).
 
+
