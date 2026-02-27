@@ -66,3 +66,4 @@ erDiagram
     SAVINGS_GOALS }o--|| "auth.users" : "owned by"
 ```
 
+
