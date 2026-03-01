@@ -23,3 +23,4 @@ The project follows a **Clean Layered Architecture** within its backend service:
 - **Backend Service**: Deno (Supabase Edge Functions), TypeScript.
 - **Database**: PostgreSQL (Supabase) with Row Level Security (RLS).
 
+
