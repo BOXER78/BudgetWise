@@ -36,3 +36,4 @@ sequenceDiagram
     Note over U: Toast Alert: "Expense added" + Budget Status
 ```
 
+
