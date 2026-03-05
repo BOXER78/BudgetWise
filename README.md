@@ -42,3 +42,4 @@ Comprehensive design documentation is available in the root directory:
 - **Security**: JWT-based authentication and Row Level Security (RLS).
 
 
+
