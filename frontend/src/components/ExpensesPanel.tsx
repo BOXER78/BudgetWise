@@ -14,6 +14,8 @@ import { toast } from "sonner";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { Trash2 } from "lucide-react";
 
+import { useAuth } from "@/hooks/useAuth";
+
 type Category = { id: string; name: string; color: string | null };
 type Expense = {
   id: string;
@@ -28,6 +30,7 @@ type Expense = {
 const PAYMENT_MODES = ["cash", "card", "upi", "bank", "other"];
 
 export const ExpensesPanel = () => {
+  const { user } = useAuth();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [amount, setAmount] = useState("");
@@ -57,6 +60,7 @@ export const ExpensesPanel = () => {
 
   const addExpense = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return toast.error("User not found");
     const amt = parseFloat(amount);
     if (isNaN(amt) || amt <= 0) {
       toast.error("Enter a valid amount");
@@ -67,6 +71,7 @@ export const ExpensesPanel = () => {
       const { data, error } = await supabase
         .from("expenses")
         .insert({
+          user_id: user.id, // Explicitly pass user_id for RLS
           amount: amt,
           expense_date: date,
           description,
