@@ -3,68 +3,65 @@
 ```mermaid
 erDiagram
 
-    USERS {
-        int user_id PK
+    PROFILES {
+        uuid id PK
+        uuid user_id FK "auth.users"
         string name
         string email
-        string password_hash
-        string profile_image
-        datetime created_at
-        datetime last_login
+        timestamptz created_at
+        timestamptz updated_at
     }
 
     CATEGORIES {
-        int category_id PK
+        uuid id PK
+        uuid user_id FK "auth.users"
         string name
         string description
-        int user_id FK
-        datetime created_at
+        string color
+        timestamptz created_at
+        timestamptz updated_at
     }
 
     EXPENSES {
-        int expense_id PK
-        int user_id FK
-        int category_id FK
-        decimal amount
+        uuid id PK
+        uuid user_id FK "auth.users"
+        uuid category_id FK "categories"
+        numeric amount
         string description
         string payment_mode
-        datetime expense_date
-        datetime created_at
+        date expense_date
+        timestamptz created_at
+        timestamptz updated_at
     }
 
     BUDGETS {
-        int budget_id PK
-        int user_id FK
-        decimal amount
+        uuid id PK
+        uuid user_id FK "auth.users"
+        uuid category_id FK "categories"
+        numeric amount
         int month
         int year
-        datetime created_at
+        timestamptz created_at
+        timestamptz updated_at
     }
 
     SAVINGS_GOALS {
-        int goal_id PK
-        int user_id FK
+        uuid id PK
+        uuid user_id FK "auth.users"
         string title
-        decimal target_amount
-        decimal current_amount
-        datetime deadline
+        numeric target_amount
+        numeric current_amount
+        date deadline
         string status
-        datetime created_at
+        timestamptz created_at
+        timestamptz updated_at
     }
 
-    REPORTS {
-        int report_id PK
-        int user_id FK
-        string report_type
-        datetime generated_at
-        string file_path
-    }
-
-    USERS ||--o{ CATEGORIES : creates
-    USERS ||--o{ EXPENSES : records
-    USERS ||--o{ BUDGETS : sets
-    USERS ||--o{ SAVINGS_GOALS : owns
-    USERS ||--o{ REPORTS : generates
-
-    CATEGORIES ||--o{ EXPENSES : categorizes
+    PROFILES }o--|| "auth.users" : "maps to"
+    CATEGORIES }o--|| "auth.users" : "owned by"
+    EXPENSES }o--|| "auth.users" : "recorded by"
+    EXPENSES }o--|| CATEGORIES : "categorized by"
+    BUDGETS }o--|| "auth.users" : "set by"
+    BUDGETS }o--|| CATEGORIES : "associates with"
+    SAVINGS_GOALS }o--|| "auth.users" : "owned by"
 ```

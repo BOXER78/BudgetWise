@@ -5,93 +5,67 @@ classDiagram
 
     %% ================= ENTITIES =================
 
-    class User {
-        +Long userId
-        +String name
-        +String email
-        +String passwordHash
-        +Date createdAt
-        +login()
-        +register()
-        +updateProfile()
-    }
-
     class Expense {
-        +Long expenseId
-        +Double amount
-        +Date expenseDate
-        +String description
-        +String paymentMode
-        +createExpense()
-        +updateExpense()
-        +deleteExpense()
+        +number amount
+        +string expenseDate
+        +string description
+        +string paymentMode
+        +string categoryId
     }
 
-    class Category {
-        +Long categoryId
-        +String name
-        +String description
-    }
-
-    class Budget {
-        +Long budgetId
-        +Double amount
-        +int month
-        +int year
-        +checkLimit()
-    }
-
-    class SavingsGoal {
-        +Long goalId
-        +String title
-        +Double targetAmount
-        +Double currentAmount
-        +Date deadline
-        +updateProgress()
-    }
-
-    %% ================= CONTROLLERS =================
-
-    class AuthController {
-        +login()
-        +register()
-    }
-
-    class ExpenseController {
-        +addExpense()
-        +updateExpense()
-        +deleteExpense()
-        +getExpenses()
-    }
-
-    %% ================= SERVICES =================
-
-    class ExpenseService {
-        +addExpense()
-        +calculateTotal()
-    }
-
-    class BudgetService {
-        +checkBudgetLimit()
+    class BudgetStatus {
+        +boolean hasBudget
+        +number budgetAmount
+        +number spent
+        +number remaining
+        +boolean overLimit
+        +string scope
     }
 
     %% ================= REPOSITORIES =================
 
-    class UserRepository
-    class ExpenseRepository
-    class BudgetRepository
+    class ExpenseRepository {
+        -SupabaseClient db
+        -string userId
+        +insert(Expense e)
+        +sumForMonth(year, month, categoryId)
+    }
+
+    class BudgetRepository {
+        -SupabaseClient db
+        -string userId
+        +findForPeriod(year, month, categoryId)
+    }
+
+    %% ================= SERVICES =================
+
+    class BudgetService {
+        -BudgetRepository budgetRepo
+        -ExpenseRepository expenseRepo
+        +checkBudgetLimit(year, month, categoryId)
+    }
+
+    class ExpenseService {
+        -ExpenseRepository expenseRepo
+        -BudgetService budgetService
+        +addExpense(Expense e)
+    }
+
+    %% ================= CONTROLLER =================
+
+    class ExpenseController {
+        -ExpenseService service
+        +addExpense(any body)
+        +checkBudget(any body)
+    }
 
     %% ================= RELATIONSHIPS =================
 
-    User "1" --> "*" Expense
-    User "1" --> "*" Category
-    User "1" --> "*" Budget
-    User "1" --> "*" SavingsGoal
-    Category "1" --> "*" Expense
-
-    AuthController --> UserRepository
     ExpenseController --> ExpenseService
     ExpenseService --> ExpenseRepository
     ExpenseService --> BudgetService
     BudgetService --> BudgetRepository
+    BudgetService --> ExpenseRepository
+    ExpenseService ..> Expense
+    BudgetService ..> BudgetStatus
 ```

@@ -1,73 +1,24 @@
-# BudgetWise – Multi-User Personal Finance & Expense Tracking System
+# BudgetWise – Personal Finance & Expense Tracker
 
 ## Overview
+BudgetWise is a comprehensive personal finance application built to help users seamlessly track their daily expenses, manage monthly budgets, and reach their long-term savings goals.
 
-BudgetWise is a full-stack multi-user personal finance and expense tracker application. It allows registered users to manage their expenses across categories, set budgets, track savings goals, and generate financial reports.
+The application leverages a modern tech stack with a focused backend architecture to ensure security, reliability, and ease of use.
 
-The application emphasizes backend design with proper OOP, controller-service-repository pattern, authentication, and database relationships.
+## Key Features
+- **User Authentication**: Secure sign-up/login via Supabase Auth.
+- **Expense Management**: Multi-user transaction recording with category and payment mode selection.
+- **Intelligent Budgeting**: Automated budget monitoring with real-time overspending alerts. Supports both monthly and category-specific limits.
+- **Savings Progression**: Visual tracking of long-term savings goals with progress indicators.
+- **Real-time Analytics**: Dashboard summaries for monthly spending and transaction history.
 
-## Motivation
+## Architecture
+The project follows a **Clean Layered Architecture** within its backend service:
+- **Controller Layer**: Handles HTTP requests, validates input, and maps responses.
+- **Service Layer**: Implements core business logic (e.g., calculating budget status).
+- **Repository Layer**: Abstracts database operations using the Supabase client.
 
-Many users lack tools to effectively track spending, monitor budgets, and measure progress toward savings goals. BudgetWise fills this gap with a structured, secure, and user-centric financial tracker.
-
-## Features
-
-###  User Management
-
-- Secure multi-user registration and login
-- Profile editing
-- Password protection
-
-
-### Expense Management
-- Add, edit, delete expenses
-- Categorize transactions
-- View expense history
-
-
-### Category Management
-- Default & custom categories
-- Category organizational tools
-
-
-### Budget Module
-- Set monthly & category-wise budget
-- Budget tracking & overspend alerts
-
-
-###  Savings Goal Module
-- Set savings goals
-- Monitor progress
-
-
-###  Reports & Analytics
-- Monthly expense summary
-- Category breakdown
-- Budget vs actual view
-
-
-## Tech Stack (Suggested)
-
-Backend: Express / Node.js 
-Database: MySQL / PostgreSQL  
-Frontend: React / React + Tailwind / HTML+CSS  
-Authentication: JWT  
-API: REST
-
-
-## Backend Focus
-
-The backend follows:
-
-
-- Object-Oriented Principles (Encapsulation, Abstraction, Inheritance, Polymorphism)
-- Clean layered structure (Controller, Service, Repository)
-- Authentication
-- Database relationships
-
-## Scope
-
-- Multi-user support
-- Secure backend
-- Robust business logic
-- Report generation
+## Tech Stack
+- **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, Shadcn UI.
+- **Backend Service**: Deno (Supabase Edge Functions), TypeScript.
+- **Database**: PostgreSQL (Supabase) with Row Level Security (RLS).

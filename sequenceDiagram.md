@@ -1,41 +1,37 @@
-# BudgetWise - Sequence Diagram (Add Expense with Budget Check)
+# BudgetWise - Sequence Diagram
 
 ```mermaid
 sequenceDiagram
+    participant U as User / Frontend (Vite)
+    participant SF as Supabase Function (Deno)
+    participant EC as ExpenseController
+    participant ES as ExpenseService
+    participant BS as BudgetService
+    participant ER as ExpenseRepository
+    participant BR as BudgetRepository
+    participant DB as PostgreSQL (Supabase)
 
-    participant U as User
-    participant F as Frontend
-    participant AuthC as AuthController
-    participant ExpC as ExpenseController
-    participant ExpS as ExpenseService
-    participant BudS as BudgetService
-    participant Repo as Repository
-    participant DB as Database
-
-    U->>F: Login credentials
-    F->>AuthC: POST /login
-    AuthC->>Repo: Validate user
-    Repo->>DB: Fetch user
-    DB-->>Repo: User data
-    Repo-->>AuthC: Valid
-    AuthC-->>F: JWT Token
-
-    U->>F: Add expense details
-    F->>ExpC: POST /expenses
-    ExpC->>ExpS: addExpense()
-
-    ExpS->>Repo: Save expense
-    Repo->>DB: Insert expense
-    DB-->>Repo: Success
-
-    ExpS->>BudS: checkBudgetLimit()
-    BudS->>Repo: Fetch user budget
-    Repo->>DB: Query budget
-    DB-->>Repo: Budget data
-    Repo-->>BudS: Budget info
-
-    BudS-->>ExpS: Budget status (OK / Overlimit)
-    ExpS-->>ExpC: Response
-    ExpC-->>F: Success + Budget alert
-    F-->>U: Display result
+    U->>SF: invoke("budgetwise-api", { action: "add_expense", payload })
+    Note over SF: Middleware: Authenticate JWT
+    SF->>EC: addExpense(payload)
+    EC->>ES: addExpense(ExpenseEntity)
+    
+    ES->>ER: insert(ExpenseEntity)
+    ER->>DB: INSERT INTO expenses
+    DB-->>ER: return record
+    
+    ES->>BS: checkBudgetLimit(year, month, categoryId)
+    BS->>BR: findForPeriod(...)
+    BR->>DB: SELECT FROM budgets
+    DB-->>BR: return budget data
+    
+    BS->>ER: sumForMonth(...)
+    ER->>DB: SELECT SUM(amount) FROM expenses
+    DB-->>ER: return sum
+    
+    BS-->>ES: return BudgetStatus
+    ES-->>EC: return { expense, budget: BudgetStatus }
+    EC-->>SF: return { status: 200, body }
+    SF-->>U: JSON Response
+    Note over U: Toast Alert: "Expense added" + Budget Status
 ```
