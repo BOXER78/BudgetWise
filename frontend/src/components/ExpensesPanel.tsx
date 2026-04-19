@@ -55,7 +55,15 @@ export const ExpensesPanel = () => {
   };
 
   useEffect(() => {
-    load();
+    load().then(() => {
+      // Ensure we have a default category selected if any exist
+      setCategories(prev => {
+        if (prev.length > 0 && !categoryId) {
+          setCategoryId(prev[0].id);
+        }
+        return prev;
+      });
+    });
   }, []);
 
   const addExpense = async (e: React.FormEvent) => {
