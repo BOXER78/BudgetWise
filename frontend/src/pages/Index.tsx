@@ -23,7 +23,7 @@ const Index = () => {
     supabase
       .from("profiles")
       .select("name")
-      .eq("user_id", user.id)
+      .eq("id", user.id)
       .maybeSingle()
       .then(({ data }) => setName(data?.name ?? ""));
   }, [user]);

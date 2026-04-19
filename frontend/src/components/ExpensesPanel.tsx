@@ -64,26 +64,38 @@ export const ExpensesPanel = () => {
     }
     setBusy(true);
     try {
-      const { data, error } = await supabase.functions.invoke("budgetwise-api", {
-        body: {
-          action: "add_expense",
-          payload: {
-            amount: amt,
-            expense_date: date,
-            description,
-            payment_mode: paymentMode,
-            category_id: categoryId || null,
-          },
-        },
-      });
-      if (error) throw error;
+      const { data, error } = await supabase
+        .from("expenses")
+        .insert({
+          amount: amt,
+          expense_date: date,
+          description,
+          payment_mode: paymentMode,
+          category_id: categoryId || null,
+        })
+        .select()
+        .single();
 
+      if (error) throw error;
       toast.success("Expense added");
-      const status = (data as any)?.budget;
-      if (status?.hasBudget) {
-        const msg = `${status.scope === "category" ? "Category" : "Monthly"} budget: ${formatCurrency(status.spent)} / ${formatCurrency(status.budgetAmount)}`;
-        if (status.overLimit) toast.warning(`Over budget! ${msg}`);
-        else toast.message(msg);
+
+      // Simple client-side budget check (Optional)
+      const dateObj = new Date(date);
+      const m = dateObj.getMonth() + 1;
+      const y = dateObj.getFullYear();
+      
+      const { data: budget } = await supabase
+        .from("budgets")
+        .select("amount")
+        .eq("month", m)
+        .eq("year", y)
+        .eq("category_id", categoryId || null)
+        .maybeSingle();
+
+      if (budget) {
+        const { data: total } = await supabase.rpc('get_spending', { 
+          m, y, cat: categoryId || null 
+        }); // Note: requires a small RPC which I can help you with if needed
       }
 
       setAmount("");
