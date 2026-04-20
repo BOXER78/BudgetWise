@@ -1,6 +1,6 @@
 # BudgetWise – Professional Expense & Budget Management
 
-BudgetWise is a full-stack personal finance application that allows users to track expenses, manage monthly and category-based budgets, and monitor savings goals.
+BudgetWise is a full-stack personal finance application that enables users to track expenses, manage monthly and category-based budgets, and monitor savings goals.
 
 ## 🚀 Getting Started
 
